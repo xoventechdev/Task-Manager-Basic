@@ -18,7 +18,6 @@ export const verifyToken = (req, res, next) => {
 
     req.userId = decoded.userId;
     req.email = decoded.email;
-    req.role = decoded.role;
     next();
   } catch (err) {
     console.error(err);
@@ -26,33 +25,4 @@ export const verifyToken = (req, res, next) => {
       .status(401)
       .json({ status: "error", response: "Unauthorized: Invalid token" });
   }
-};
-
-const authorizationLevels = {
-  admin: ["admin"],
-  editor: ["manager"],
-  user: ["user"],
-};
-
-export const authorize = (roles = []) => {
-  return (req, res, next) => {
-    if (!roles.length) {
-      return next();
-    }
-
-    const userRole = req.role;
-
-    if (
-      !authorizationLevels[userRole] ||
-      !authorizationLevels[userRole].some((allowedRole) =>
-        roles.includes(allowedRole)
-      )
-    ) {
-      return res
-        .status(403)
-        .json({ response: "Forbidden: Insufficient permissions" });
-    }
-
-    next();
-  };
 };

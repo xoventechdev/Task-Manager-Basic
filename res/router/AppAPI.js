@@ -1,25 +1,31 @@
 import { Router } from "express";
 import {
-  emailVerify,
-  emailVerifyRequest,
-  getUserProfile,
-  passwordForgot,
-  passwordReset,
   userProfileUpdate,
   userSignIn,
   userSignUp,
 } from "../controllers/user/UserController.js";
 import { verifyToken } from "../middleware/Auth.js";
+import {
+  allTaskList,
+  countTaskByStatus,
+  createTask,
+  deleteTask,
+  listTaskByStatus,
+  updateTaskStatus,
+} from "../controllers/task/TaskController.js";
 
-const router = Router();
+const router = new Router();
 
-router.post("/signup", userSignUp);
-router.post("/signin", userSignIn);
-router.post("/emailVerify", emailVerify);
-router.post("/passwordForgot", passwordForgot);
-router.post("/passwordReset", passwordReset);
-router.post("/userProfileUpdate/:id", verifyToken, userProfileUpdate);
-router.post("/emailVerifyRequest", emailVerifyRequest);
-router.get("/getUserProfile/:id", verifyToken, getUserProfile);
+//User Router
+router.post("/userSignUp", userSignUp);
+router.post("/userSignIn", userSignIn);
+router.post("/userProfileUpdate", verifyToken, userProfileUpdate);
+
+router.post("/createTask", verifyToken, createTask);
+router.get("/allTaskList", verifyToken, allTaskList);
+router.put("/updateTaskStatus/:id/:status", verifyToken, updateTaskStatus);
+router.delete("/deleteTask/:id", verifyToken, deleteTask);
+router.get("/listTaskByStatus/:status", verifyToken, listTaskByStatus);
+router.get("/countTaskByStatus", verifyToken, countTaskByStatus);
 
 export default router;
