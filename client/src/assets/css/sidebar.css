@@ -84,11 +84,13 @@
   transition: 0.3s;
   margin-top: 80px;
   margin-left: 240px;
+  padding-left: 10px;
 }
 .content-expand {
   margin-top: 80px;
   transition: 0.3s;
   margin-left: 0;
+  padding-left: 10px;
 }
 
 .nav-logo {

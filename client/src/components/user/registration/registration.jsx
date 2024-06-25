@@ -5,8 +5,12 @@ import {
   IsEmpty,
   IsMobile,
 } from "../../../helper/FormHelper";
+import { ToastContainer } from "react-toastify";
+import { RegistrationRequest } from "../../../apiRequest/APIRequest";
+import { Link, useNavigate } from "react-router-dom";
 
 const Registration = () => {
+  const navigate = useNavigate();
   let emailRef,
     firstNameRef,
     lastNameRef,
@@ -26,11 +30,24 @@ const Registration = () => {
       ErrorToast("Please enter first name");
     } else if (IsEmpty(lastName)) {
       ErrorToast("Please enter last name");
-    } else if (IsMobile(mobile)) {
+    } else if (!IsMobile(mobile)) {
       ErrorToast("Please enter a valid mobile number");
     } else if (IsEmpty(password)) {
       ErrorToast("Please enter password");
     } else {
+      let postData = {
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        mobile: mobile,
+        password: password,
+        photo: "",
+      };
+      RegistrationRequest(postData).then((res) => {
+        if (res) {
+          navigate("/login");
+        }
+      });
     }
   };
 
@@ -41,6 +58,7 @@ const Registration = () => {
           <div className="card animated fadeIn w-100 p-3">
             <div className="card-body">
               <h4>Sign Up</h4>
+              <ToastContainer />
               <hr />
               <div className="container-fluid m-0 p-0">
                 <div className="row m-0 p-0">
@@ -90,7 +108,7 @@ const Registration = () => {
                     />
                   </div>
                 </div>
-                <div className="row mt-2 p-0">
+                <div className="row mt-2 p-0 justify-content-center">
                   <div className="col-md-4 p-2">
                     <button
                       onClick={onRegistration}
@@ -98,6 +116,13 @@ const Registration = () => {
                     >
                       Complete
                     </button>
+
+                    <Link
+                      to={"/login"}
+                      className="btn mt-1 w-100 float-end btn-dark animated fadeInUp"
+                    >
+                      Log In
+                    </Link>
                   </div>
                 </div>
               </div>

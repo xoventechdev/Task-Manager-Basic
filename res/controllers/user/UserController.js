@@ -44,7 +44,7 @@ export const userSignIn = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({
+      return res.json({
         status: "error",
         response: "Please provide all the required fields",
       });
@@ -53,7 +53,7 @@ export const userSignIn = async (req, res) => {
     // Check for existing user
     const user = await UserModel.findOne({ email });
     if (!user) {
-      return res.status(401).json({
+      return res.json({
         status: "error",
         response: "The user does not exist. Please create your account.",
       });
@@ -62,7 +62,7 @@ export const userSignIn = async (req, res) => {
     // Verify password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({
+      return res.json({
         status: "error",
         response: "Invalid password. Please try with your valid password",
       });
@@ -81,7 +81,7 @@ export const userSignIn = async (req, res) => {
     );
 
     res.cookie("token", token, {
-      httpOnly: true,
+      httpOnly: false,
       secure: false,
       maxAge: 1000 * 60 * 60,
     });

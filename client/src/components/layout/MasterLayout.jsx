@@ -18,28 +18,29 @@ const MasterLayout = (props) => {
   let contentRef,
     sideNavRef = useRef();
 
-  const onLogout = () => {
-    removeSessions();
-  };
-
   const MenuBarClickHandler = () => {
     let sideNav = sideNavRef;
     let content = contentRef;
+
     if (sideNav.classList.contains("side-nav-open")) {
-      sideNav.classList.add("side-nav-close");
       sideNav.classList.remove("side-nav-open");
-      content.classList.add("content-expand");
       content.classList.remove("content");
+      sideNav.classList.add("side-nav-close");
+      content.classList.add("content-expand");
     } else {
       sideNav.classList.remove("side-nav-close");
-      sideNav.classList.add("side-nav-open");
       content.classList.remove("content-expand");
+      sideNav.classList.add("side-nav-open");
       content.classList.add("content");
     }
   };
 
+  const onLogout = () => {
+    removeSessions();
+    navigate("/login");
+  };
   return (
-    <Fragment>
+    <>
       <Navbar className="fixed-top px-0 shadow-sm ">
         <Container fluid={true}>
           <Navbar.Brand>
@@ -117,7 +118,7 @@ const MasterLayout = (props) => {
               ? "side-bar-item-active side-bar-item mt-2"
               : "side-bar-item mt-2"
           }
-          to="/All"
+          to="/new"
         >
           <BsListNested className="side-bar-item-icon" />
           <span className="side-bar-item-caption">New Task</span>
@@ -163,7 +164,7 @@ const MasterLayout = (props) => {
       <div ref={(div) => (contentRef = div)} className="content">
         {props.children}
       </div>
-    </Fragment>
+    </>
   );
 };
 
