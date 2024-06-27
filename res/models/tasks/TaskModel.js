@@ -4,7 +4,7 @@ const taskSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     description: { type: String },
-    status: { type: String, required: true, default: "ToDo" }, // Can be 'ToDo', 'InProgress', 'Done', 'Completed'
+    status: { type: String, required: true, default: "new" }, // Can be 'ToDo', 'InProgress', 'Done', 'Completed'
     email: { type: String, required: true },
   },
   {

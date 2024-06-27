@@ -93,16 +93,25 @@ export const listTaskByStatus = async (req, res) => {
           },
         },
       },
-    ])
-      .then(() => {
-        res.status(200).json({
-          status: "success",
-          response: item,
-        });
-      })
-      .catch((err) => {
-        res.status(500).json({ status: "error", response: err.message });
+    ]);
+
+    if (item) {
+      res.status(200).json({
+        status: "success",
+        response: item,
       });
+    } else {
+      res.status(500).json({ status: "error", response: err.message });
+    }
+    // .then(() => {
+    //   res.status(200).json({
+    //     status: "success",
+    //     response: item,
+    //   });
+    // })
+    // .catch((err) => {
+    //   res.status(500).json({ status: "error", response: err.message });
+    // });
   } catch (error) {
     console.error(err);
     res.status(500).json({ status: "error", response: err.message });

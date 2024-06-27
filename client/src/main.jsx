@@ -7,9 +7,13 @@ import "./assets/css/style.css";
 import "./assets/css/sidebar.css";
 import "./assets/css/progress.css";
 import "./assets/css/dropdownmenu.css";
+import ReduxStore from "./redux/store/ReduxStore.js";
+import { Provider } from "react-redux";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <Provider store={ReduxStore}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
