@@ -19,8 +19,7 @@ import ForgetPasswordPage from "./pages/user/ForgetPasswordPage";
 import { getToken } from "./helper/SessionHelper";
 
 function App() {
-  if (getToken) {
-    console.log(getToken);
+  if (getToken()) {
     return (
       <BrowserRouter>
         <Routes>
@@ -39,7 +38,6 @@ function App() {
       </BrowserRouter>
     );
   } else {
-    console.log(getToken);
     return (
       <BrowserRouter>
         <Routes>

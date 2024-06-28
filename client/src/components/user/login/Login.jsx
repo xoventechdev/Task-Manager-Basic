@@ -1,5 +1,5 @@
 import React, { Fragment, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { ErrorToast, IsEmail, IsEmpty } from "../../../helper/FormHelper";
 import { ToastContainer } from "react-toastify";
 import { LogInRequest } from "../../../apiRequest/APIRequest";
@@ -23,7 +23,7 @@ const Login = () => {
       }).then((res) => {
         console.log(res);
         if (res) {
-          navigate("/");
+          window.location.href = "/";
         }
       });
     }
