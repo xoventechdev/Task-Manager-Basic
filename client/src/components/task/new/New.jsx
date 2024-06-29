@@ -9,6 +9,7 @@ import { ErrorToast, IsEmpty } from "../../../helper/FormHelper";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import { CreateTask, TaskListByStatus } from "../../../apiRequest/APIRequest";
+import { UpdateTask } from "../../../helper/UpdateHelper";
 
 const New = () => {
   useEffect(() => {
@@ -26,7 +27,7 @@ const New = () => {
   };
 
   const StatusChangeItem = (id, status) => {
-    UpdateToDO(id, status).then((result) => {
+    UpdateTask(id, status).then((result) => {
       if (result === true) {
         TaskListByStatus("New");
       }

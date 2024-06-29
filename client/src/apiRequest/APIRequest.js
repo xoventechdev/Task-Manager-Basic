@@ -3,6 +3,7 @@ import axios from "axios";
 import { getToken, setToken, setUserDetails } from "../helper/SessionHelper";
 import ReduxStore from "../redux/store/ReduxStore";
 import { setNewTask } from "../redux/stateSlice/TaskSlice";
+import { UnAuthorizeRequest } from "./UnAuthorizeRequest";
 
 const BaseUrl = "http://localhost:3030/api/v1/";
 
@@ -11,7 +12,6 @@ export const RegistrationRequest = (data) => {
   return axios
     .post(URL, data)
     .then((res) => {
-      console.log(res);
       if (res.status === 201) {
         SuccessToast(res.data.response);
         return true;
@@ -21,7 +21,6 @@ export const RegistrationRequest = (data) => {
       }
     })
     .catch((error) => {
-      console.log(error);
       ErrorToast(error.message);
       return false;
     });
@@ -32,7 +31,6 @@ export const LogInRequest = (data) => {
   return axios
     .post(URL, data)
     .then((res) => {
-      console.log(res);
       if (res.status === 200 && res.data.status === "success") {
         setToken(res.data.token);
         setUserDetails(res.data.response);
@@ -57,7 +55,6 @@ export const CreateTask = (data) => {
       },
     })
     .then((res) => {
-      console.log(res);
       if (res.status === 200 && res.data.status === "success") {
         SuccessToast(res.data.response);
         return true;
@@ -67,14 +64,14 @@ export const CreateTask = (data) => {
       }
     })
     .catch((error) => {
-      console.log(error);
       ErrorToast(error.message);
+      UnAuthorizeRequest(error);
       return false;
     });
 };
 
 export const TaskListByStatus = (status) => {
-  let URL = BaseUrl + "/listTaskByStatus/" + status;
+  let URL = BaseUrl + "listTaskByStatus/" + status;
   return axios
     .get(URL, {
       headers: {
@@ -82,7 +79,6 @@ export const TaskListByStatus = (status) => {
       },
     })
     .then((res) => {
-      console.log(res);
       if (res.status === 200 && res.data.status === "success") {
         if (status === "new") {
           ReduxStore.dispatch(setNewTask(res.data.response));
@@ -94,8 +90,28 @@ export const TaskListByStatus = (status) => {
       }
     })
     .catch((error) => {
-      console.log(error);
       ErrorToast(error.message);
+      UnAuthorizeRequest(error);
+      return false;
+    });
+};
+
+export const UpdateTaskStatus = (id, status) => {
+  let URL = BaseUrl + "updateTaskStatus/" + id + "/" + status;
+  return axios
+    .put(URL, { headers: { token: getToken() } })
+    .then((res) => {
+      if (res.status === 200 && res.data.status === "success") {
+        SuccessToast(res.data.response);
+        return true;
+      } else {
+        ErrorToast(res.data.response);
+        return false;
+      }
+    })
+    .catch((error) => {
+      ErrorToast(error.message);
+      UnAuthorizeRequest(error);
       return false;
     });
 };

@@ -23,7 +23,7 @@ router.post("/userProfileUpdate", verifyToken, userProfileUpdate);
 
 router.post("/createTask", verifyToken, createTask);
 router.get("/allTaskList", verifyToken, allTaskList);
-router.put("/updateTaskStatus/:id/:status", verifyToken, updateTaskStatus);
+router.put("/updateTaskStatus/:id/:status", updateTaskStatus);
 router.delete("/deleteTask/:id", verifyToken, deleteTask);
 router.get("/listTaskByStatus/:status", verifyToken, listTaskByStatus);
 router.get("/countTaskByStatus", verifyToken, countTaskByStatus);

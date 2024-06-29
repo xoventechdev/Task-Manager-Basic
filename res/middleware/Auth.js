@@ -6,7 +6,7 @@ export const verifyToken = (req, res, next) => {
   if (!token) {
     token = req.cookies.token;
   }
-
+  console.error(token);
   if (!token) {
     return res
       .status(401)
@@ -19,7 +19,6 @@ export const verifyToken = (req, res, next) => {
     req.userId = decoded.userId;
     req.email = decoded.email;
 
-    console.log("Verifying token");
     next();
   } catch (err) {
     console.error(err);

@@ -37,21 +37,32 @@ export const allTaskList = async (req, res) => {
 
 export const updateTaskStatus = async (req, res) => {
   try {
-    let { id, status } = req.params;
-    console.log(status);
-    await TaskModel.updateOne({ id: id }, { status: status })
-      .then(() => {
-        res.status(200).json({
-          status: "success",
-          response: "Task status updated successfully",
-        });
-      })
-      .catch((err) => {
-        res.status(500).json({ status: "error", response: err.message });
+    // Destructure parameters directly for cleaner syntax
+    const { id, status } = req.params;
+
+    console.log(id + " = " + status);
+
+    // Update the task using await for proper error handling
+    const updatedTask = await TaskModel.updateOne({ id }, { status });
+
+    // Check if update was successful
+    if (updatedTask.modifiedCount === 0) {
+      return res.status(404).json({
+        status: "error",
+        response: "Task with the provided ID not found",
       });
+    }
+
+    res.status(200).json({
+      status: "success",
+      response: "Task status updated successfully",
+    });
   } catch (error) {
-    console.error(err);
-    res.status(500).json({ status: "error", response: err.message });
+    console.error(error); // Use console.error for more detailed logging
+    res.status(500).json({
+      status: "error",
+      response: "An error occurred while updating the task",
+    });
   }
 };
 
