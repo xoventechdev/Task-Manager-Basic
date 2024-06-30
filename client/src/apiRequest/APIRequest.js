@@ -81,7 +81,6 @@ export const TaskListByStatus = (status) => {
     .then((res) => {
       if (res.status === 200 && res.data.status === "success") {
         if (status === "new") {
-          console.log(res.data.response);
           ReduxStore.dispatch(setNewTask(res.data.response));
         }
         return true;
@@ -101,6 +100,26 @@ export const UpdateTaskStatus = (id, status) => {
   let URL = BaseUrl + "updateTaskStatus/" + id + "/" + status;
   return axios
     .get(URL, { headers: { token: getToken() } })
+    .then((res) => {
+      if (res.status === 200 && res.data.status === "success") {
+        SuccessToast(res.data.response);
+        return true;
+      } else {
+        ErrorToast(res.data.response);
+        return false;
+      }
+    })
+    .catch((error) => {
+      ErrorToast(error.message);
+      UnAuthorizeRequest(error);
+      return false;
+    });
+};
+
+export const DeleteTaskById = (id) => {
+  let URL = BaseUrl + "deleteTask/" + id;
+  return axios
+    .delete(URL, { headers: { token: getToken() } })
     .then((res) => {
       if (res.status === 200 && res.data.status === "success") {
         SuccessToast(res.data.response);

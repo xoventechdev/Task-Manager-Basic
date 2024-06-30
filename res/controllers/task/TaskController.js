@@ -37,32 +37,22 @@ export const allTaskList = async (req, res) => {
 
 export const updateTaskStatus = async (req, res) => {
   try {
-    // Destructure parameters directly for cleaner syntax
     const { id, status } = req.params;
-
-    console.log(id + " = " + status);
-
-    // Update the task using await for proper error handling
     const updatedTask = await TaskModel.updateOne(
       { _id: id },
       { status: status }
     );
-    console.log(updatedTask);
-
-    // Check if update was successful
     if (updatedTask.modifiedCount === 0) {
       return res.status(404).json({
         status: "error",
         response: "Task with the provided ID not found",
       });
     }
-
     res.status(200).json({
       status: "success",
       response: "Task status updated successfully",
     });
   } catch (error) {
-    console.error(error); // Use console.error for more detailed logging
     res.status(500).json({
       status: "error",
       response: "An error occurred while updating the task",
@@ -73,7 +63,7 @@ export const updateTaskStatus = async (req, res) => {
 export const deleteTask = async (req, res) => {
   try {
     let { id } = req.params;
-    await TaskModel.remove({ id: _id })
+    await TaskModel.deleteOne({ _id: id })
       .then(() => {
         res.status(200).json({
           status: "success",
@@ -84,8 +74,8 @@ export const deleteTask = async (req, res) => {
         res.status(500).json({ status: "error", response: err.message });
       });
   } catch (error) {
-    console.error(err);
-    res.status(500).json({ status: "error", response: err.message });
+    console.error(error);
+    res.status(500).json({ status: "error", response: error.message });
   }
 };
 
@@ -100,17 +90,15 @@ export const listTaskByStatus = async (req, res) => {
           title: 1,
           description: 1,
           status: 1,
-          format: { $toDate: "$createdAt" },
-          createdDate: {
-            $dateToString: {
-              date: "$format",
-              format: "yyyy-MM-dd",
-            },
-          },
+          createdDate: "$createdAt",
+          // createdDate: {
+          //   $dateToString: { date: "$createdAt", format: "yyyy-MM-dd" },
+          // },
         },
       },
     ]);
 
+    console.log(item);
     if (item) {
       res.status(200).json({
         status: "success",
@@ -119,15 +107,6 @@ export const listTaskByStatus = async (req, res) => {
     } else {
       res.status(500).json({ status: "error", response: err.message });
     }
-    // .then(() => {
-    //   res.status(200).json({
-    //     status: "success",
-    //     response: item,
-    //   });
-    // })
-    // .catch((err) => {
-    //   res.status(500).json({ status: "error", response: err.message });
-    // });
   } catch (error) {
     console.error(err);
     res.status(500).json({ status: "error", response: err.message });
