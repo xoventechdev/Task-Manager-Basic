@@ -28,8 +28,9 @@ const New = () => {
 
   const StatusChangeItem = (id, status) => {
     UpdateTask(id, status).then((result) => {
+      console.log(result);
       if (result === true) {
-        TaskListByStatus("New");
+        TaskListByStatus("new");
       }
     });
   };

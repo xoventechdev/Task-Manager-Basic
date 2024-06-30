@@ -43,7 +43,11 @@ export const updateTaskStatus = async (req, res) => {
     console.log(id + " = " + status);
 
     // Update the task using await for proper error handling
-    const updatedTask = await TaskModel.updateOne({ id }, { status });
+    const updatedTask = await TaskModel.updateOne(
+      { _id: id },
+      { status: status }
+    );
+    console.log(updatedTask);
 
     // Check if update was successful
     if (updatedTask.modifiedCount === 0) {
@@ -96,9 +100,10 @@ export const listTaskByStatus = async (req, res) => {
           title: 1,
           description: 1,
           status: 1,
+          format: { $toDate: "$createdAt" },
           createdDate: {
             $dateToString: {
-              date: "$created_at",
+              date: "$format",
               format: "yyyy-MM-dd",
             },
           },
