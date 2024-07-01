@@ -11,11 +11,9 @@ export const createTask = async (req, res) => {
           .json({ status: "success", response: "Task created successfully" });
       })
       .catch((err) => {
-        console.error(err);
         res.status(500).json({ status: "error", response: err.message });
       });
   } catch (error) {
-    console.error(err);
     res.status(500).json({ status: "error", response: err.message });
   }
 };
@@ -30,7 +28,6 @@ export const allTaskList = async (req, res) => {
         res.status(500).json({ status: "error", response: err.message });
       });
   } catch (error) {
-    console.error(err);
     res.status(500).json({ status: "error", response: err.message });
   }
 };
@@ -74,7 +71,6 @@ export const deleteTask = async (req, res) => {
         res.status(500).json({ status: "error", response: err.message });
       });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ status: "error", response: error.message });
   }
 };
@@ -91,14 +87,10 @@ export const listTaskByStatus = async (req, res) => {
           description: 1,
           status: 1,
           createdDate: "$createdAt",
-          // createdDate: {
-          //   $dateToString: { date: "$createdAt", format: "yyyy-MM-dd" },
-          // },
         },
       },
     ]);
 
-    console.log(item);
     if (item) {
       res.status(200).json({
         status: "success",
@@ -108,7 +100,6 @@ export const listTaskByStatus = async (req, res) => {
       res.status(500).json({ status: "error", response: err.message });
     }
   } catch (error) {
-    console.error(err);
     res.status(500).json({ status: "error", response: err.message });
   }
 };
@@ -134,7 +125,6 @@ export const countTaskByStatus = async (req, res) => {
         res.status(500).json({ status: "error", response: err.message });
       });
   } catch (error) {
-    console.error(err);
     res.status(500).json({ status: "error", response: err.message });
   }
 };

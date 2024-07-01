@@ -2,7 +2,12 @@ import { ErrorToast, SuccessToast } from "../helper/FormHelper";
 import axios from "axios";
 import { getToken, setToken, setUserDetails } from "../helper/SessionHelper";
 import ReduxStore from "../redux/store/ReduxStore";
-import { setNewTask } from "../redux/stateSlice/TaskSlice";
+import {
+  setCanceledTask,
+  setCompletedTask,
+  setInProgressTask,
+  setNewTask,
+} from "../redux/stateSlice/TaskSlice";
 import { UnAuthorizeRequest } from "./UnAuthorizeRequest";
 
 const BaseUrl = "http://localhost:3030/api/v1/";
@@ -82,6 +87,12 @@ export const TaskListByStatus = (status) => {
       if (res.status === 200 && res.data.status === "success") {
         if (status === "new") {
           ReduxStore.dispatch(setNewTask(res.data.response));
+        } else if (status === "progress") {
+          ReduxStore.dispatch(setInProgressTask(res.data.response));
+        } else if (status === "completed") {
+          ReduxStore.dispatch(setCompletedTask(res.data.response));
+        } else if (status === "canceled") {
+          ReduxStore.dispatch(setCanceledTask(res.data.response));
         }
         return true;
       } else {

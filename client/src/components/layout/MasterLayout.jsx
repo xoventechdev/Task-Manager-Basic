@@ -69,7 +69,7 @@ const MasterLayout = (props) => {
                   <h6>{getUserDetails()["firstName"]}</h6>
                   <hr className="user-dropdown-divider  p-0" />
                 </div>
-                <NavLink to="/Profile" className="side-bar-item">
+                <NavLink to="/profile" className="side-bar-item">
                   <AiOutlineUser className="side-bar-item-icon" />
                   <span className="side-bar-item-caption">Profile</span>
                 </NavLink>
@@ -108,7 +108,7 @@ const MasterLayout = (props) => {
               ? "side-bar-item-active side-bar-item mt-2"
               : "side-bar-item mt-2"
           }
-          to="/Create"
+          to="/create"
         >
           <AiOutlineEdit className="side-bar-item-icon" />
           <span className="side-bar-item-caption">Create New</span>
@@ -132,7 +132,7 @@ const MasterLayout = (props) => {
               ? "side-bar-item-active side-bar-item mt-2"
               : "side-bar-item mt-2"
           }
-          to="/Progress"
+          to="/progress"
         >
           <BsHourglass className="side-bar-item-icon" />
           <span className="side-bar-item-caption">In Progress</span>
@@ -144,7 +144,7 @@ const MasterLayout = (props) => {
               ? "side-bar-item-active side-bar-item mt-2"
               : "side-bar-item mt-2"
           }
-          to="/Completed"
+          to="/completed"
         >
           <AiOutlineCheckCircle className="side-bar-item-icon" />
           <span className="side-bar-item-caption">Completed</span>
@@ -156,7 +156,7 @@ const MasterLayout = (props) => {
               ? "side-bar-item-active side-bar-item mt-2"
               : "side-bar-item mt-2"
           }
-          to="/Canceled"
+          to="/canceled"
         >
           <MdOutlineCancelPresentation className="side-bar-item-icon" />
           <span className="side-bar-item-caption">Canceled</span>
