@@ -17,25 +17,29 @@ import LoginPage from "./pages/user/LoginPage";
 import RegistrationPage from "./pages/user/RegistrationPage";
 import ForgetPasswordPage from "./pages/user/ForgetPasswordPage";
 import { getToken } from "./helper/SessionHelper";
+import FullScreenLoader from "./components/layout/FullScreenLoader";
 
 function App() {
   if (getToken()) {
     return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/create" element={<CreatePage />} />
-          <Route path="/new" element={<NewPage />} />
-          <Route path="/progress" element={<ProgressPage />} />
-          <Route path="/completed" element={<CompletedPage />} />
-          <Route path="/canceled" element={<CanceledPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/login" element={<Navigate to={"/"} />} />
-          <Route path="/registration" element={<Navigate to={"/"} />} />
-          <Route path="/password-reset" element={<Navigate to={"/"} />} />
-          <Route path="*" element={<Page404 />} />
-        </Routes>
-      </BrowserRouter>
+      <>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/create" element={<CreatePage />} />
+            <Route path="/new" element={<NewPage />} />
+            <Route path="/progress" element={<ProgressPage />} />
+            <Route path="/completed" element={<CompletedPage />} />
+            <Route path="/canceled" element={<CanceledPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/login" element={<Navigate to={"/"} />} />
+            <Route path="/registration" element={<Navigate to={"/"} />} />
+            <Route path="/password-reset" element={<Navigate to={"/"} />} />
+            <Route path="*" element={<Page404 />} />
+          </Routes>
+        </BrowserRouter>
+        <FullScreenLoader />
+      </>
     );
   } else {
     return (
