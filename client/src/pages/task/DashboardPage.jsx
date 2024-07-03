@@ -1,6 +1,8 @@
 import React, { Suspense } from "react";
 import MasterLayout from "../../components/layout/MasterLayout";
-import Dashboard from "../../components/task/dashboard/Dashboard";
+const Dashboard = React.lazy(() =>
+  import("../../components/task/dashboard/Dashboard")
+);
 import LazyLoader from "../../components/layout/LazyLoader";
 
 const DashboardPage = () => {

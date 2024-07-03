@@ -21,7 +21,6 @@ const Login = () => {
         email: email,
         password: password,
       }).then((res) => {
-        console.log(res);
         if (res) {
           window.location.href = "/";
         }

@@ -6,7 +6,7 @@ export const userSignUp = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
     if (!firstName || !lastName || !email || !password) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: "error",
         response: "Please provide all the required fields",
       });
@@ -15,7 +15,7 @@ export const userSignUp = async (req, res) => {
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
       return res
-        .status(400)
+        .status(200)
         .json({ status: "warning", response: "Email already exists" });
     }
 

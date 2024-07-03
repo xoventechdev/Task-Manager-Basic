@@ -1,7 +1,9 @@
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 import MasterLayout from "../../components/layout/MasterLayout";
 import LazyLoader from "../../components/layout/LazyLoader";
-import Canceled from "../../components/task/canceled/Canceled";
+const Canceled = React.lazy(() =>
+  import("../../components/task/canceled/Canceled")
+);
 
 const CanceledPage = () => {
   return (

@@ -1,6 +1,8 @@
 import React, { Suspense } from "react";
 import MasterLayout from "../../components/layout/MasterLayout";
-import Completed from "../../components/task/completed/Completed";
+const Completed = React.lazy(() =>
+  import("../../components/task/completed/Completed")
+);
 import LazyLoader from "../../components/layout/LazyLoader";
 
 const CompletedPage = () => {

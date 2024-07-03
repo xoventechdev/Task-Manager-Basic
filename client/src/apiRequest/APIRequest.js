@@ -10,6 +10,7 @@ import {
 } from "../redux/stateSlice/TaskSlice";
 import { UnAuthorizeRequest } from "./UnAuthorizeRequest";
 import { HideLoader, ShowLoader } from "../redux/stateSlice/SettingSlice";
+import { addSummary } from "../redux/stateSlice/SummarySlice";
 
 const BaseUrl = "http://localhost:3030/api/v1/";
 
@@ -29,6 +30,7 @@ export const RegistrationRequest = (data) => {
       }
     })
     .catch((error) => {
+      ReduxStore.dispatch(HideLoader());
       ErrorToast(error.message);
       return false;
     });
@@ -51,6 +53,7 @@ export const LogInRequest = (data) => {
       }
     })
     .catch((error) => {
+      ReduxStore.dispatch(HideLoader());
       ErrorToast(error.message);
       return false;
     });
@@ -76,6 +79,7 @@ export const CreateTask = (data) => {
       }
     })
     .catch((error) => {
+      ReduxStore.dispatch(HideLoader());
       ErrorToast(error.message);
       UnAuthorizeRequest(error);
       return false;
@@ -110,6 +114,7 @@ export const TaskListByStatus = (status) => {
       }
     })
     .catch((error) => {
+      ReduxStore.dispatch(HideLoader());
       ErrorToast(error.message);
       UnAuthorizeRequest(error);
       return false;
@@ -132,6 +137,7 @@ export const UpdateTaskStatus = (id, status) => {
       }
     })
     .catch((error) => {
+      ReduxStore.dispatch(HideLoader());
       ErrorToast(error.message);
       UnAuthorizeRequest(error);
       return false;
@@ -154,6 +160,30 @@ export const DeleteTaskById = (id) => {
       }
     })
     .catch((error) => {
+      ReduxStore.dispatch(HideLoader());
+      ErrorToast(error.message);
+      UnAuthorizeRequest(error);
+      return false;
+    });
+};
+
+export const TaskSummary = () => {
+  ReduxStore.dispatch(ShowLoader());
+  let URL = BaseUrl + "countTaskByStatus";
+  return axios
+    .get(URL, { headers: { token: getToken() } })
+    .then((res) => {
+      ReduxStore.dispatch(HideLoader());
+      if (res.status === 200 && res.data.status === "success") {
+        ReduxStore.dispatch(addSummary(res.data.response));
+        return true;
+      } else {
+        ErrorToast(res.data.response);
+        return false;
+      }
+    })
+    .catch((error) => {
+      ReduxStore.dispatch(HideLoader());
       ErrorToast(error.message);
       UnAuthorizeRequest(error);
       return false;

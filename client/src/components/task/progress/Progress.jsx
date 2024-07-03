@@ -36,7 +36,7 @@ const Progress = () => {
     <Container fluid={true} className="content-body">
       <div className="row p-0 m-0">
         <div className="col-12 col-md-6 col-lg-8 px-3">
-          <h5>Task New</h5>
+          <h5>In Progress Task</h5>
         </div>
         <div className="col-12 float-end col-md-6 col-lg-4 px-2">
           <div className="row">
@@ -78,7 +78,7 @@ const Progress = () => {
                     >
                       <AiOutlineDelete />
                     </a>
-                    <a className="badge float-end bg-info">{item.status}</a>
+                    <a className="badge float-end bg-primary">{item.status}</a>
                   </p>
                 </div>
               </div>

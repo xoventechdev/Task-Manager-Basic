@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import LazyLoader from "../../components/layout/LazyLoader";
 import MasterLayout from "../../components/layout/MasterLayout";
-import Create from "../../components/task/create/Create";
+const Create = React.lazy(() => import("../../components/task/create/Create"));
 
 const CreatePage = () => {
   return (
