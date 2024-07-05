@@ -13,6 +13,7 @@ import logo from "../../assets/images/logo.svg";
 import { MdOutlineCancelPresentation } from "react-icons/md";
 import { RiDashboardLine } from "react-icons/ri";
 import { getUserDetails, removeSessions } from "../../helper/SessionHelper";
+import { useSelector } from "react-redux";
 
 const MasterLayout = (props) => {
   let contentRef,

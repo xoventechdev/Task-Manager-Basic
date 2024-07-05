@@ -12,14 +12,21 @@ import router from "./res/router/AppAPI.js";
 const app = express();
 
 dotenv.config();
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: 1024 * 50 }));
 app.use(cors());
 app.use(expressMongoSanitize());
 app.use(helmet());
 app.use(hpp());
 app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb" }));
+app.use(bodyParser.json({ limit: "50mb", extended: true }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 50000,
+  })
+);
+app.use(bodyParser.text({ limit: "200mb" }));
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,

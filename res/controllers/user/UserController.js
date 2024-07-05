@@ -115,6 +115,8 @@ export const userSignIn = async (req, res) => {
 export const userProfileUpdate = async (req, res) => {
   try {
     const email = req.email;
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    req.body.password = hashedPassword;
 
     await UserModel.updateOne({ email: email }, req.body, {
       new: true,
@@ -123,6 +125,30 @@ export const userProfileUpdate = async (req, res) => {
       status: "success",
       response: "User profile updated successfully.",
     });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: "error", response: err.message });
+  }
+};
+
+export const userProfileInfo = async (req, res) => {
+  try {
+    const email = req.email;
+    const user = await UserModel.aggregate([
+      { $match: { email: email } },
+      {
+        $project: {
+          password: 0,
+        },
+      },
+    ]);
+    if (user) {
+      return res.status(200).json({ status: "success", response: user[0] });
+    } else {
+      return res
+        .status(200)
+        .json({ status: "error", response: "User not found" });
+    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ status: "error", response: err.message });

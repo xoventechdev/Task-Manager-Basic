@@ -44,5 +44,6 @@ export const {
   IsEmail,
   ErrorToast,
   getBase64,
+  encodeImageFileAsURL,
   SuccessToast,
 } = new FormHelper();

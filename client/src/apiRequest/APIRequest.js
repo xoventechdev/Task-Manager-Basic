@@ -11,6 +11,7 @@ import {
 import { UnAuthorizeRequest } from "./UnAuthorizeRequest";
 import { HideLoader, ShowLoader } from "../redux/stateSlice/SettingSlice";
 import { addSummary } from "../redux/stateSlice/SummarySlice";
+import { setProfile } from "../redux/stateSlice/ProfileSlice";
 
 const BaseUrl = "http://localhost:3030/api/v1/";
 
@@ -186,6 +187,76 @@ export const TaskSummary = () => {
       ReduxStore.dispatch(HideLoader());
       ErrorToast(error.message);
       UnAuthorizeRequest(error);
+      return false;
+    });
+};
+
+export const getUserData = () => {
+  ReduxStore.dispatch(ShowLoader());
+  let URL = BaseUrl + "userProfile";
+  return axios
+    .get(URL, { headers: { token: getToken() } })
+    .then((res) => {
+      ReduxStore.dispatch(HideLoader());
+      if (res.status === 200 && res.data.status === "success") {
+        ReduxStore.dispatch(setProfile(res.data.response));
+        return true;
+      } else {
+        ErrorToast(res.data.response);
+        return false;
+      }
+    })
+    .catch((error) => {
+      ReduxStore.dispatch(HideLoader());
+      ErrorToast(error.message);
+      UnAuthorizeRequest(error);
+      return false;
+    });
+};
+
+export const UserProfileUpdate = (
+  email,
+  firstName,
+  lastName,
+  mobile,
+  password,
+  photo
+) => {
+  let postData = {
+    email: email,
+    firstName: firstName,
+    lastName: lastName,
+    mobile: mobile,
+    password: password,
+    photo: photo,
+  };
+  let dataForBrowser = {
+    email: email,
+    firstName: firstName,
+    lastName: lastName,
+    mobile: mobile,
+    photo: photo,
+  };
+  ReduxStore.dispatch(ShowLoader());
+  let URL = BaseUrl + "userProfileUpdate";
+  return axios
+    .post(URL, postData, {
+      headers: { token: getToken(), "Content-Type": "application/json" },
+    })
+    .then((res) => {
+      ReduxStore.dispatch(HideLoader());
+      if (res.status === 200) {
+        setUserDetails(dataForBrowser);
+        SuccessToast(res.data.response);
+        return true;
+      } else {
+        ErrorToast(res.data.response);
+        return false;
+      }
+    })
+    .catch((error) => {
+      ReduxStore.dispatch(HideLoader());
+      ErrorToast(error.message);
       return false;
     });
 };

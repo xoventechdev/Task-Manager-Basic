@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  userProfileInfo,
   userProfileUpdate,
   userSignIn,
   userSignUp,
@@ -20,6 +21,7 @@ const router = new Router();
 router.post("/userSignUp", userSignUp);
 router.post("/userSignIn", userSignIn);
 router.post("/userProfileUpdate", verifyToken, userProfileUpdate);
+router.get("/userProfile", verifyToken, userProfileInfo);
 
 router.post("/createTask", verifyToken, createTask);
 router.get("/allTaskList", verifyToken, allTaskList);
