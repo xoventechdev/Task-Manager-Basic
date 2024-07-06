@@ -10,7 +10,6 @@ import {
 } from "../controllers/user/UserController.js";
 import { verifyToken } from "../middleware/Auth.js";
 import {
-  allTaskList,
   countTaskByStatus,
   createTask,
   deleteTask,
