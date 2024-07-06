@@ -12,8 +12,13 @@ import router from "./res/router/AppAPI.js";
 const app = express();
 
 dotenv.config();
+app.use(
+  cors({
+    origin: "https://kaleidoscopic-entremet-cde903.netlify.app",
+    credentials: true,
+  })
+);
 app.use(bodyParser.json({ limit: 1024 * 50 }));
-app.use(cors());
 app.use(expressMongoSanitize());
 app.use(helmet());
 app.use(hpp());
