@@ -1,6 +1,11 @@
 import { UserModel } from "../../models/user/UserModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { OTPModel } from "../../models/user/OTPModel.js";
+import {
+  passwordResetSuccessfully,
+  sendPasswordResetEmail,
+} from "../../helper/MailServices.js";
 
 export const userSignUp = async (req, res) => {
   try {
@@ -149,6 +154,84 @@ export const userProfileInfo = async (req, res) => {
         .status(200)
         .json({ status: "error", response: "User not found" });
     }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: "error", response: err.message });
+  }
+};
+
+export const PasswordResetOTPRequest = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const user = await UserModel.findOne({ email: email });
+    if (!user) {
+      return res
+        .status(200)
+        .json({ status: "warning", response: "User not found" });
+    }
+    const otp = Math.floor(100000 + Math.random() * 90000);
+    await OTPModel.create({ email: email, otp: otp });
+    const successOTP = await sendPasswordResetEmail(email, otp);
+    if (successOTP) {
+      return res.status(200).json({
+        status: "success",
+        response: "OTP sent successfully to your registered email address",
+      });
+    } else {
+      return res.status(200).json({
+        status: "warning",
+        response: "Failed to send OTP. Please try again later.",
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: "error", response: err.message });
+  }
+};
+
+export const OTPVerifyRequest = async (req, res) => {
+  try {
+    const { email, otp } = req.params;
+    const otpRecord = await OTPModel.findOne({
+      email: email,
+      otp: otp,
+      isUsed: 0,
+    });
+    if (!otpRecord) {
+      return res.status(200).json({
+        status: "warning",
+        response: "Invalid OTP. Please try again.",
+      });
+    }
+
+    otpRecord.isUsed = 1;
+    await otpRecord.save();
+    res
+      .status(200)
+      .json({ status: "success", response: "OTP verified successfully." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: "error", response: err.message });
+  }
+};
+
+export const PasswordResetRequest = async (req, res) => {
+  try {
+    const { email, otp, password } = req.body;
+    const user = await OTPModel.findOne({ email: email, otp: otp, isUsed: 1 });
+    if (!user) {
+      return res.status(200).json({
+        status: "warning",
+        response: "User not found with matched otp.",
+      });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await UserModel.updateOne({ email: email }, { password: hashedPassword });
+    await OTPModel.deleteMany({ email: email });
+    await passwordResetSuccessfully(email);
+    res
+      .status(200)
+      .json({ status: "success", response: "Password reset successfully." });
   } catch (err) {
     console.error(err);
     res.status(500).json({ status: "error", response: err.message });

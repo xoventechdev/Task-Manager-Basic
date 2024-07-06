@@ -18,20 +18,6 @@ export const createTask = async (req, res) => {
   }
 };
 
-export const allTaskList = async (req, res) => {
-  try {
-    await TaskModel.find({ email: req.email })
-      .then((data) => {
-        res.status(200).json({ status: "success", response: data });
-      })
-      .catch((err) => {
-        res.status(500).json({ status: "error", response: err.message });
-      });
-  } catch (error) {
-    res.status(500).json({ status: "error", response: err.message });
-  }
-};
-
 export const updateTaskStatus = async (req, res) => {
   try {
     const { id, status } = req.params;
